@@ -1,5 +1,6 @@
 import { AlertCircle, Gift, HandCoins } from "lucide-react";
 import { getRecipient } from "src/actions/getRecipient";
+import ClaimButton from "src/components/ClaimButton";
 import { ModeOfPayment } from "src/components/CurrencyInput";
 import Navbar from "src/components/Navbar";
 
@@ -11,8 +12,13 @@ const inrFormatter = new Intl.NumberFormat('hi-IN', {
     maximumFractionDigits: 2
 });
 
-const ClaimPage = async (ctx: { params: { publicKey: string } }) => {
+const ClaimPage = async (ctx: {
+    params: { publicKey: string },
+    searchParams: { key: string },
+}) => {
     const publicKey = ctx.params.publicKey;
+    const privateKey = ctx.searchParams.key;
+    console.log("🚀 ~ privateKey:", privateKey)
     const recipient = await getRecipient(publicKey);
 
     if (!recipient) {
@@ -37,10 +43,10 @@ const ClaimPage = async (ctx: { params: { publicKey: string } }) => {
                 </div>
             </section>
             <section className="py-6">
-                <button className='w-full bg-brand text-white py-4 rounded-lg font-medium tracking-wider text-xl hover:bg-brand/80 focus:bg-brand/80 flex items-center justify-center space-x-2'>
-                    <HandCoins size={24} />
-                    <span>अपना धन प्राप्त करें</span>
-                </button>
+                <ClaimButton
+                    publicKey={publicKey}
+                    privateKey={privateKey}
+                />
             </section>
         </div>
     );

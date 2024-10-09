@@ -1,3 +1,4 @@
+"use client";
 import { LifecycleStatus, Transaction, TransactionButton } from '@coinbase/onchainkit/transaction';
 import { Call } from 'node_modules/@coinbase/onchainkit/esm/transaction/types';
 import { contractAbi } from 'src/lib/contractAbi';
@@ -6,7 +7,7 @@ import { baseSepolia } from 'viem/chains';
 
 interface ClaimButtonProps {
     publicKey: string
-    privateKey: bigint
+    privateKey: string
 }
 const ClaimButton: React.FC<ClaimButtonProps> = ({ privateKey, publicKey }) => {
     // return (
@@ -17,8 +18,8 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ privateKey, publicKey }) => {
 
     const encodedData = encodeFunctionData({
         abi: contractAbi,
-        functionName: 'submitAmount',
-        args: [publicKey],
+        functionName: 'claimAmount',
+        args: [publicKey, privateKey],
     });
 
     const calls: Call[] = [
@@ -33,8 +34,18 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ privateKey, publicKey }) => {
         },
     ];
 
-    function handleOnStatus(lifecycleStatus: LifecycleStatus): void {
-        // throw new Error('Function not implemented.')
+    const handleOnStatus = async (status: LifecycleStatus) => {
+        console.log("🚀 ~ handleOnStatus ~ status:", status)
+
+        if (status.statusName === 'success' && status.statusData.transactionReceipts) {
+            try {
+
+                // Store recipient information in the database
+
+            } catch (error) {
+                console.error('Error storing recipient:', error);
+            }
+        }
     }
 
     return <Transaction

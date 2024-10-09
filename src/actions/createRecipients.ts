@@ -3,14 +3,13 @@
 'use server'
 
 import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { prisma } from 'src/lib/prisma'
 
 interface CreateRecipientParams {
     senderAddress: string
     recipientName: string
     publicKey: string
-    amount: number
+    amount: string
     submissionTxHash: string
 }
 
