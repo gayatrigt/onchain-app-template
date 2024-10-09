@@ -8,7 +8,7 @@ const config: Config = {
         brand: "#FF5924"
       },
       animation: {
-        blob: "blob 4s infinite",
+        blob: "blob 7s infinite",
       },
       keyframes: {
         blob: {

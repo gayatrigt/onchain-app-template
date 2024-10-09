@@ -30,7 +30,6 @@ const InviteButton: React.FC = () => {
 
     const { address: senderAddress } = useAccount()
     const [recipientName, setRecipientName] = useState<string>('');
-    const [transactionStatus, setTransactionStatus] = useState<string>('');
     const [calls, setCalls] = useState<Call[]>([]);
     const [claimLink, setClaimLink] = useState<string>()
 
@@ -67,7 +66,6 @@ const InviteButton: React.FC = () => {
 
     const handleOnStatus = useCallback(async (status: LifecycleStatus) => {
         console.log("🚀 ~ handleOnStatus ~ status:", status)
-        setTransactionStatus(status.statusName);
 
         if (status.statusName === 'success' && status.statusData.transactionReceipts) {
             try {

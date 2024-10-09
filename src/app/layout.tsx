@@ -37,6 +37,7 @@ export default function RootLayout({
       <body className="flex items-center justify-center">
         <div className="absolute top-3 -left-36 w-72 h-72 bg-brand/40 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob " />
         <div className="absolute top-1/3 -right-56 w-96 h-96 aspect-square bg-brand/40 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob " />
+        <div className="absolute -bottom-1/3 -left-1/2  w-96 h-96 aspect-square bg-brand/40 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob " />
         <OnchainProviders>
           {children}
           <Toaster />
