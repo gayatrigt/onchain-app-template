@@ -12,7 +12,7 @@ datasource db {
 
 model Recipient {
     id               Int       @id @default(autoincrement())
-    senderName       String
+    senderAddress    String
     recipientName    String
     publicKey        String    @unique
     amount           Decimal

@@ -1,12 +1,15 @@
 "use client";
 import React, { useEffect, useState } from 'react'
 import CurrencyInput from 'react-currency-input-field';
+import { useCurrencyStore } from 'src/store/useCurrencyStore';
 
 type ModeOfPayment = "ETH" | "INR"
 
 const CurrencyInputSection = () => {
-    const [currencyAmount, setCurrencyAmount] = useState<string>('100')
-    const [exchangeRates, setExchangeRates] = useState<number>(0)
+    // const [currencyAmount, setCurrencyAmount] = useState<string>('100')
+    // const [exchangeRates, setExchangeRates] = useState<number>(0)
+
+    const { currencyAmount, setCurrencyAmount, exchangeRates, setExchangeRates } = useCurrencyStore()
 
     const getExchangeRates = async () => {
         // get usd to eth rate
@@ -24,7 +27,7 @@ const CurrencyInputSection = () => {
 
     return (
         <section className='flex-1 flex items-center justify-center px-4'>
-            <div className='flex flex-col text-center'>
+            <div className='flex flex-col text-center w-screen'>
                 <CurrencyInput
                     id="currency-input"
                     name="currency-input"
