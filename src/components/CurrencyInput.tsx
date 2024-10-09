@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import CurrencyInput from 'react-currency-input-field';
 import { useCurrencyStore } from 'src/store/useCurrencyStore';
 
-type ModeOfPayment = "ETH" | "INR"
+export type ModeOfPayment = "ETH" | "INR"
 
 const CurrencyInputSection = () => {
     // const [currencyAmount, setCurrencyAmount] = useState<string>('100')

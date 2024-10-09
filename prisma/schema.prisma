@@ -15,7 +15,7 @@ model Recipient {
     senderAddress    String
     recipientName    String
     publicKey        String    @unique
-    amount           Decimal
+    amount           String
     claimed          Boolean   @default(false)
     claimedAt        DateTime?
     createdAt        DateTime  @default(now())
