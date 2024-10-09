@@ -1,0 +1,28 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Recipient {
+    id               Int       @id @default(autoincrement())
+    senderName       String
+    recipientName    String
+    publicKey        String    @unique
+    amount           Decimal
+    claimed          Boolean   @default(false)
+    claimedAt        DateTime?
+    createdAt        DateTime  @default(now())
+    updatedAt        DateTime  @updatedAt
+    message          String?
+    submissionTxHash String? // New field for submission transaction hash
+    claimTxHash      String? // New field for claim transaction hash
+
+    @@index([publicKey])
+}

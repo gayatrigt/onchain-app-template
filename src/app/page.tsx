@@ -1,20 +1,34 @@
 'use client';
+import { Transaction, TransactionButton, TransactionSponsor, TransactionStatus, TransactionStatusAction, TransactionStatusLabel } from '@coinbase/onchainkit/transaction';
 import { useRouter } from 'next/navigation';
 import { IoChevronDown } from "react-icons/io5";
 import CurrencyInput from 'src/components/CurrencyInput';
+import { sepolia } from 'viem/chains';
 import { useAccount } from 'wagmi';
 import LoginButton from '../components/LoginButton';
 import SignupButton from '../components/SignupButton';
 
-const transactions = [
-  { id: 1, type: 'sent', amount: '0.5 ETH', status: 'Completed', date: '2024-10-07', address: '0x1234...5678' },
-  { id: 2, type: 'claimed', amount: '0.3 ETH', status: 'Claimed', date: '2024-10-06', address: '0xabcd...efgh' },
-  { id: 3, type: 'sent', amount: '0.2 ETH', status: 'Pending', date: '2024-10-05', address: '0x9876...5432' },
+const abi = [
+  "function submitAmount(bytes32 publicKey) external payable",
+  "function claimAmount(bytes32 publicKey, bytes32 privateKey) external"
 ];
 
 const HomeScreen = () => {
   const { address } = useAccount();
   const router = useRouter();
+
+  const contracts = [
+    {
+      address: "",
+      abi,
+      functionName: 'submitAmount',
+      args: [],
+    },
+  ]
+
+  const fetchRecipients = () => {
+
+  }
 
 
   const handleSendMoney = () => {
@@ -36,7 +50,7 @@ const HomeScreen = () => {
       <CurrencyInput />
 
       <section className='w-full'>
-        <div className='border-t-2 border-brand/40 py-6 px-4 grid gap-4'>
+        <div className=' py-6 px-4 grid gap-4'>
           <label className='flex flex-col'>
             <span className='font-semibold text-slate-400'>I am sending this to</span>
             <div className="relative">
@@ -46,12 +60,25 @@ const HomeScreen = () => {
               </button>
             </div>
           </label>
-          <button className='w-full bg-brand text-white py-4 rounded-lg font-medium tracking-wider'>
+          {/* <button className='w-full bg-brand text-white py-4 rounded-lg font-medium tracking-wider'>
             Send Invite
-          </button>
+          </button> */}
+
+          <Transaction
+            chainId={sepolia.id}
+          // contracts={contracts}
+          // onStatus={handleOnStatus}
+          >
+            <TransactionButton />
+            <TransactionSponsor />
+            <TransactionStatus>
+              <TransactionStatusLabel />
+              <TransactionStatusAction />
+            </TransactionStatus>
+          </Transaction>
         </div>
-      </section>
-    </div>
+      </section >
+    </div >
   );
 };
 
