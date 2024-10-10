@@ -1,7 +1,7 @@
 import { LifecycleStatus, Transaction, TransactionButton } from '@coinbase/onchainkit/transaction';
 import { PrismaClient } from '@prisma/client';
 import { CopyIcon } from 'lucide-react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
 import { createRecipient } from 'src/actions/createRecipients';
 import { contractAbi } from 'src/lib/contractAbi';
@@ -10,8 +10,6 @@ import { useCurrencyStore } from 'src/store/useCurrencyStore';
 import { bytesToHex, encodeFunctionData, formatEther, keccak256, parseEther, toBytes } from 'viem';
 import { baseSepolia } from 'viem/chains';
 import { useAccount } from 'wagmi';
-
-const prisma = new PrismaClient();
 
 interface KeyPair {
     privateKey: `0x${string}`;
@@ -36,22 +34,29 @@ const InviteButton: React.FC = () => {
     const generateKeyPair = useCallback((): KeyPair => {
         const privateKey = bytesToHex(crypto.getRandomValues(new Uint8Array(32))) as `0x${string}`;
         const publicKey = keccak256(toBytes(privateKey));
+        console.log("🚀 ~ generateKeyPair ~ privateKey, publicKey:", privateKey, publicKey)
+
         return { privateKey, publicKey };
-    }, []);
+    }, [currencyAmount, recipientName]);
+
+    const { publicKey, privateKey } = useMemo(() => generateKeyPair(), [generateKeyPair]);
+    console.log("🚀 ~ publicKey, privateKey:", publicKey, privateKey)
 
     const generateInvite = useCallback(() => {
-        const { publicKey } = generateKeyPair();
+
 
         const encodedData = encodeFunctionData({
             abi: contractAbi,
-            functionName: 'submitAmount',
+            functionName: 'createBhet',
             args: [publicKey],
         });
+
+        console.log("🚀 ~ generateInvite ~ process.env.NEXT_PUBLIC_CONTRACT_ADDRESS:", process.env.NEXT_PUBLIC_CONTRACT_ADDRESS)
 
         const newCalls: Call[] = [
             {
                 // base sepolia
-                to: "0x9D4d4f60eA2bc88811685a98290473548Ca1Ae60",
+                to: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as any,
 
                 // base mainnet
                 // to: "0xdFaebb66DFeef3b7EfE3e1C6Be0e1d5448E5Ff7d",
@@ -69,8 +74,6 @@ const InviteButton: React.FC = () => {
 
         if (status.statusName === 'success' && status.statusData.transactionReceipts) {
             try {
-                const { publicKey, privateKey } = generateKeyPair();
-
                 // Store recipient information in the database
                 const recipient = await createRecipient({
                     senderAddress: senderAddress as string,

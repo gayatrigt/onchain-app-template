@@ -3,7 +3,7 @@ import { Recipient } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { getRecipients } from "src/actions/getRecipients";
 import CurrencyInput from 'src/components/CurrencyInput';
-import InviteButton from 'src/components/InviteButtont';
+import InviteButton from 'src/components/InviteButton';
 import Navbar from "src/components/Navbar";
 import NavbarCta from 'src/components/NavbarCta';
 import { useAccount } from "wagmi";

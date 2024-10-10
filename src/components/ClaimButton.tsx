@@ -6,10 +6,10 @@ import { encodeFunctionData } from 'viem';
 import { baseSepolia } from 'viem/chains';
 
 interface ClaimButtonProps {
-    publicKey: string
+    tokenId: number
     privateKey: string
 }
-const ClaimButton: React.FC<ClaimButtonProps> = ({ privateKey, publicKey }) => {
+const ClaimButton: React.FC<ClaimButtonProps> = ({ privateKey, tokenId }) => {
     // return (
     //     <button className='w-full bg-brand text-white py-4 rounded-lg font-medium tracking-wider text-xl hover:bg-brand/80 focus:bg-brand/80 flex items-center justify-center space-x-2'>
     //         <span>अपना धन प्राप्त करें</span>
@@ -19,13 +19,13 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ privateKey, publicKey }) => {
     const encodedData = encodeFunctionData({
         abi: contractAbi,
         functionName: 'claimAmount',
-        args: [publicKey, privateKey],
+        args: [tokenId, privateKey],
     });
 
     const calls: Call[] = [
         {
             // base sepolia
-            to: "0x9D4d4f60eA2bc88811685a98290473548Ca1Ae60",
+            to: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as any,
 
             // base mainnet
             // to: "0xdFaebb66DFeef3b7EfE3e1C6Be0e1d5448E5Ff7d",
