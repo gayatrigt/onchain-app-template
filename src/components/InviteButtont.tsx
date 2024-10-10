@@ -76,7 +76,7 @@ const InviteButton: React.FC = () => {
                     senderAddress: senderAddress as string,
                     recipientName,
                     publicKey,
-                    amount: Number(formatEther(amountInEth)),
+                    amount: formatEther(amountInEth),
                     submissionTxHash: status.statusData.transactionReceipts[0].transactionHash,
                 });
 
