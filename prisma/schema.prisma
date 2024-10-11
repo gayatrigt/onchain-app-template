@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("POSTGRES_URL")
+    provider  = "postgresql"
+    url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+    directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
 model Recipient {
@@ -23,6 +24,9 @@ model Recipient {
     message          String?
     submissionTxHash String? // New field for submission transaction hash
     claimTxHash      String? // New field for claim transaction hash
+    bhetTaken        Boolean?  @default(false)
+    cancelHash       String?
+    cancelledAt      String?
 
     @@index([publicKey])
 }
