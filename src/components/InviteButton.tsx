@@ -29,6 +29,7 @@ const InviteButton: React.FC = () => {
     const { address: senderAddress } = useAccount()
     const [recipientName, setRecipientName] = useState<string>('');
     const [calls, setCalls] = useState<Call[]>([]);
+    console.log("🚀 ~ calls:", calls)
     const [claimLink, setClaimLink] = useState<string>()
 
     const generateKeyPair = useCallback((): KeyPair => {
@@ -37,22 +38,18 @@ const InviteButton: React.FC = () => {
         console.log("🚀 ~ generateKeyPair ~ privateKey, publicKey:", privateKey, publicKey)
 
         return { privateKey, publicKey };
-    }, [currencyAmount, recipientName]);
+    }, []);
 
     const { publicKey, privateKey } = useMemo(() => generateKeyPair(), [generateKeyPair]);
-    console.log("🚀 ~ publicKey, privateKey:", publicKey, privateKey)
 
     const generateInvite = useCallback(() => {
-
-
         const encodedData = encodeFunctionData({
             abi: contractAbi,
             functionName: 'createBhet',
             args: [publicKey],
         });
 
-        console.log("🚀 ~ generateInvite ~ process.env.NEXT_PUBLIC_CONTRACT_ADDRESS:", process.env.NEXT_PUBLIC_CONTRACT_ADDRESS)
-
+        console.log("🚀 ~ generateInvite ~ amountInEth:", amountInEth)
         const newCalls: Call[] = [
             {
                 // base sepolia
@@ -67,7 +64,7 @@ const InviteButton: React.FC = () => {
         ];
 
         setCalls(newCalls);
-    }, [currencyAmount, generateKeyPair]);
+    }, [generateKeyPair, amountInEth, recipientName]);
 
     const handleOnStatus = useCallback(async (status: LifecycleStatus) => {
         console.log("🚀 ~ handleOnStatus ~ status:", status)
@@ -110,7 +107,7 @@ const InviteButton: React.FC = () => {
 
     useEffect(() => {
         generateInvite()
-    }, [senderAddress, currencyAmount])
+    }, [amountInEth, recipientName])
 
 
     return (

@@ -9,7 +9,7 @@ type Invite = {
     sender: `0x${string}`;
 };
 // Function to get invite details
-export async function getInviteFromContract(tokenId: number): Promise<Invite> {
+export async function getInviteFromContract(publicKey: string): Promise<Invite> {
     // Create a public client
     const client = createPublicClient({
         chain: baseSepolia,
@@ -22,7 +22,7 @@ export async function getInviteFromContract(tokenId: number): Promise<Invite> {
             address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as any,
             abi: contractAbi,
             functionName: 'getBhet',
-            args: [tokenId]
+            args: [publicKey]
         });
         console.log("🚀 ~ getInviteFromContract ~ result:", result)
 
