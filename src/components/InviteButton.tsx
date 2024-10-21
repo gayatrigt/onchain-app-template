@@ -1,6 +1,6 @@
 import { LifecycleStatus, Transaction, TransactionButton } from '@coinbase/onchainkit/transaction';
-import { PrismaClient } from '@prisma/client';
 import { CopyIcon } from 'lucide-react';
+import { Call } from 'node_modules/@coinbase/onchainkit/esm/transaction/types';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
 import { createRecipient } from 'src/actions/createRecipients';
@@ -14,12 +14,6 @@ import { useAccount } from 'wagmi';
 interface KeyPair {
     privateKey: `0x${string}`;
     publicKey: `0x${string}`;
-}
-
-interface Call {
-    to: `0x${string}`;
-    data: `0x${string}`;
-    value: bigint;
 }
 
 const InviteButton: React.FC = () => {
