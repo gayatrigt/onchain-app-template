@@ -62,9 +62,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({ transaction }) => {
           {transaction.amount} ETH
         </p>
       </div>
-      {transaction.claimed && <div
-        className="bg-green-700/20 border border-green-700/10 hover:bg-transparent [&_span]:text-green-700 [&_span]:font-medium [&_span]:text-xs  px-3 py-1 rounded-md text-sm"
-      >Claimed</div>}
+
       {!transaction.claimed && !transaction.bhetTaken && (
         <>
           <Transaction
@@ -92,7 +90,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({ transaction }) => {
         >
           Claimed </span>
       )}
-      {transaction.bhetTaken && (
+      {transaction.cancelHash && (
         <span
           className="bg-brand/20 border border-brand/10 hover:bg-transparent text-brand font-medium text-xs  px-3 py-1 rounded-md"
         >
