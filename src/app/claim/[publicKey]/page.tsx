@@ -35,7 +35,11 @@ const ClaimPage = async (ctx: {
 
     return (
         <div className="flex h-[100dvh] max-w-screen flex-col px-4 w-screen bg-white">
-            <Navbar />
+            <section className="py-6 flex w-full flex-col md:flex-row px-4 sticky top-0">
+                <div className="flex w-full flex-row items-center justify-between gap-2 md:gap-0">
+                    <h2 className='text-2xl font-bold'>Bhet</h2>
+                </div>
+            </section>
             <section className="flex-1 flex flex-col items-center justify-center space-y-6">
                 <div className="bg-brand/20 border-2 border-brand/10 rounded-lg z-10 flex flex-col items-center justify-center h-[50vh] p-8 gap-4 backdrop-blur-lg">
                     {hasClaimed ? (
