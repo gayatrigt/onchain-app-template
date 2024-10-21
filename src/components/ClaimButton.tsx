@@ -4,17 +4,38 @@ import { Call } from 'node_modules/@coinbase/onchainkit/esm/transaction/types';
 import { contractAbi } from 'src/lib/contractAbi';
 import { encodeFunctionData } from 'viem';
 import { baseSepolia } from 'viem/chains';
+import { useAccount } from 'wagmi';
+import WalletWrapper from './WalletWrapper';
+import { motion, AnimatePresence } from "framer-motion";
+import { recordClaim } from 'src/actions/recordClaim';
 
 interface ClaimButtonProps {
     publicKey: string
     privateKey: string
 }
+
+const buttonVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: {
+        opacity: 1,
+        scale: 1,
+        transition: {
+            duration: 0.3,
+            ease: "easeOut"
+        }
+    },
+    exit: {
+        opacity: 0,
+        scale: 0.8,
+        transition: {
+            duration: 0.2,
+            ease: "easeIn"
+        }
+    }
+};
+
 const ClaimButton: React.FC<ClaimButtonProps> = ({ privateKey, publicKey }) => {
-    // return (
-    //     <button className='w-full bg-brand text-white py-4 rounded-lg font-medium tracking-wider text-xl hover:bg-brand/80 focus:bg-brand/80 flex items-center justify-center space-x-2'>
-    //         <span>अपना धन प्राप्त करें</span>
-    //     </button>
-    // )
+    const { address } = useAccount()
 
     const encodedData = encodeFunctionData({
         abi: contractAbi,
@@ -24,39 +45,61 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ privateKey, publicKey }) => {
 
     const calls: Call[] = [
         {
-            // base sepolia
             to: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as any,
-
-            // base mainnet
-            // to: "0xdFaebb66DFeef3b7EfE3e1C6Be0e1d5448E5Ff7d",
-
             data: encodedData,
         },
     ];
 
     const handleOnStatus = async (status: LifecycleStatus) => {
-        console.log("🚀 ~ handleOnStatus ~ status:", status)
-
         if (status.statusName === 'success' && status.statusData.transactionReceipts) {
             try {
-
                 // Store recipient information in the database
-
+                await recordClaim(publicKey, status.statusData.transactionReceipts[0].transactionHash)
             } catch (error) {
                 console.error('Error storing recipient:', error);
             }
         }
     }
 
-    return <Transaction
-        chainId={baseSepolia.id}
-        calls={calls}
-        onStatus={handleOnStatus}
-    >
-        <TransactionButton
-            className='w-full bg-brand text-white py-4 rounded-lg font-medium tracking-wider text-xl hover:bg-brand/80 focus:bg-brand/80 flex items-center justify-center space-x-2' text='अपना धन प्राप्त करें'
-        />
-    </Transaction>
+    console.log("🚀 ~ address:", address)
+
+    return (
+        <AnimatePresence mode="wait">
+            {!address ? (
+                <motion.div
+                    key="wallet-wrapper"
+                    variants={buttonVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                >
+                    <WalletWrapper
+                        className="ockConnectWallet_Container w-full bg-brand [&_span]:text-white py-4 rounded-lg font-medium tracking-wider text-xl hover:bg-brand/80 focus:bg-brand/80 flex items-center justify-center space-x-2"
+                        text="खाता बनाएं"
+                    />
+                </motion.div>
+            ) : (
+                <motion.div
+                    key="transaction-button"
+                    variants={buttonVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                >
+                    <Transaction
+                        chainId={baseSepolia.id}
+                        calls={calls}
+                        onStatus={handleOnStatus}
+                    >
+                        <TransactionButton
+                            className='w-full bg-brand text-white py-4 rounded-lg font-medium tracking-wider text-xl hover:bg-brand/80 focus:bg-brand/80 flex items-center justify-center space-x-2'
+                            text='अपना धन प्राप्त करें'
+                        />
+                    </Transaction>
+                </motion.div>
+            )}
+        </AnimatePresence>
+    );
 }
 
-export default ClaimButton
+export default ClaimButton;

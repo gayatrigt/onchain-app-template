@@ -59,7 +59,7 @@ const SendMoneyPage = () => {
     return (
         <div className="container mx-auto px-4 py-8">
             <h1 className="text-3xl font-bold mb-6">Send Money</h1>
-            <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center mb-6">
                 <SignupButton />
                 {!address && <LoginButton />}
             </div>

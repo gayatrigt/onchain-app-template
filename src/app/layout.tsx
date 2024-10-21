@@ -34,10 +34,12 @@ export default function RootLayout({
 }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="flex items-center justify-center">
-        <div className="absolute top-3 -left-36 w-72 h-72 bg-brand/40 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob " />
-        <div className="absolute top-1/3 -right-56 w-96 h-96 aspect-square bg-brand/40 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob " />
-        <div className="absolute -bottom-1/3 -left-1/2  w-96 h-96 aspect-square bg-brand/40 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob " />
+      <body className="flex items-center justify-center w-[100vw] overflow-x-hidden relative">
+        <div className="h-screen w-screen overflow-hidden absolute top-0 left-0 pointer-events-none">
+          <div className="absolute top-3 -left-36 w-72 h-72 bg-brand/40 rounded-full mix-blend-multiply filter blur-xl opacity-70 pointer-events-none animate-blob" />
+          <div className="absolute top-1/3 -right-56 w-96 h-96 aspect-square bg-brand/40 rounded-full mix-blend-multiply filter blur-xl opacity-70 pointer-events-none animate-blob" />
+          <div className="absolute -bottom-1/3 -left-1/2  w-96 h-96 aspect-square bg-brand/40 rounded-full mix-blend-multiply filter blur-xl opacity-70 pointer-events-none animate-blob" />
+        </div>
         <OnchainProviders>
           {children}
           <Toaster />

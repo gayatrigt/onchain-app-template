@@ -28,7 +28,7 @@ export default function WalletWrapper({
 }: WalletWrapperParams) {
   return (
     <>
-      <Wallet>
+      <Wallet className='w-full z-[99999]'>
         <ConnectWallet
           withWalletAggregator={withWalletAggregator}
           text={text}
@@ -37,7 +37,7 @@ export default function WalletWrapper({
           <Avatar className="h-6 w-6" />
           <Name />
         </ConnectWallet>
-        <WalletDropdown className=' z-40'>
+        <WalletDropdown className='z-[99999999]'>
           <Identity className="px-4 pt-3 pb-2" hasCopyAddressOnClick={true}>
             <Avatar />
             <Name />

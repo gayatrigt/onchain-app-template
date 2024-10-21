@@ -55,13 +55,16 @@ const TransactionItem: React.FC<TransactionItemProps> = ({ transaction }) => {
 
 
   return (
-    <div className="flex justify-between items-center py-2 border-b">
-      <div>
-        <p className="font-medium">{transaction.recipientName}</p>
+    <div className="flex justify-between items-center py-2 border-b last:border-b-0 last:pb-0">
+      <div className="flex-1">
+        <p className="font-medium text-lg">{transaction.recipientName}</p>
         <p className="text-sm text-gray-500">
-          {transaction.claimed ? 'Claimed' : 'Sent'}: {transaction.amount} ETH
+          {transaction.amount} ETH
         </p>
       </div>
+      {transaction.claimed && <div
+        className="bg-green-700/20 border border-green-700/10 hover:bg-transparent [&_span]:text-green-700 [&_span]:font-medium [&_span]:text-xs  px-3 py-1 rounded-md text-sm"
+      >Claimed</div>}
       {!transaction.claimed && !transaction.bhetTaken && (
         <>
           <Transaction
@@ -69,28 +72,29 @@ const TransactionItem: React.FC<TransactionItemProps> = ({ transaction }) => {
             contracts={contracts}
             onError={console.log}
             onStatus={handleOnStatus}
+            className="!w-fit"
           >
             <TransactionButton
-              className="bg-blue-500 text-white px-3 py-1 rounded-md text-sm"
-              text='Cancel Bhet'
+              className="bg-brand/20 border border-brand/10 hover:bg-transparent [&_span]:text-brand [&_span]:font-medium [&_span]:text-xs  px-3 py-1 rounded-md text-sm"
+              text='Revert'
             />
-            <TransactionSponsor />
-            <TransactionStatus>
+            {/* <TransactionSponsor /> */}
+            {/* <TransactionStatus>
               <TransactionStatusLabel />
               <TransactionStatusAction />
-            </TransactionStatus>
+            </TransactionStatus> */}
           </Transaction>
         </>
       )}
       {transaction.claimed && (
         <span
-          className="bg-blue-500 text-white px-3 py-1 rounded-md text-sm"
+          className="bg-green-700/20 border border-green-700/10 hover:bg-transparent text-green-700 font-medium text-xs  px-3 py-1 rounded-md"
         >
           Claimed </span>
       )}
       {transaction.bhetTaken && (
         <span
-          className="bg-blue-500 text-white px-3 py-1 rounded-md text-sm"
+          className="bg-brand/20 border border-brand/10 hover:bg-transparent text-brand font-medium text-xs  px-3 py-1 rounded-md"
         >
           Cancelled </span>
       )}
@@ -126,7 +130,7 @@ const HomeScreen = () => {
 
       <div className="flex-1">
         {address && transactions.length > 0 && (
-          <div className="mt-6">
+          <div className="mx-4">
             <h2 className="text-xl font-bold mb-2">Your Transactions</h2>
             <div className="bg-white shadow rounded-lg p-4">
               {transactions.map((transaction) => (
