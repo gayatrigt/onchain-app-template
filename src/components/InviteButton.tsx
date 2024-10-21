@@ -138,8 +138,8 @@ const InviteButton: React.FC = () => {
                 </Transaction>}
 
                 {!!claimLink &&
-                    <div className='bg-slate-200 text-slate-700 rounded-lg flex items-center space-x-4'>
-                        <span className='truncate text-ellipsis flex-1 w-[75vw] items-center pl-4'>
+                    <div className='bg-slate-200 text-slate-700 rounded-lg flex items-center space-x-4 max-w-full'>
+                        <span className='truncate text-ellipsis flex-1 w-[75vw] md:w-[800px] items-center pl-4'>
                             {claimLink}
                         </span>
                         <button
